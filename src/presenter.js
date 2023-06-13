@@ -4,6 +4,7 @@ import Sort from '../src/view/sort.js';
 import Events from '../src/view/tripEvent.js';
 import EventEdit from './view/event-edit.js';
 import CreatTrip from './view/trip-add.js';
+import NoPointsView from './view/no-point.js';
 import { escPushed } from './utlis.js';
 export default class BoardPresenter{
   #boardContainer = null;
@@ -17,13 +18,17 @@ export default class BoardPresenter{
 
   init (){
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
-    this.#eventListComponent = new Board();
-    render(new Sort(),this.#boardContainer);
-    render(this.#eventListComponent, this.#boardContainer);
-    render(new CreatTrip(this.#tripPoints[0]), this.#eventListComponent.element);
-    for(let i = 1; i < this.#tripPoints.length - 1; i++){
-      this.#renderTripPoint(this.#tripPoints[i]);
-    }
+    if(this.#tripPoints.length === 0){
+      render(new NoPointsView(), this.#boardContainer);
+    }else{
+      this.#eventListComponent = new Board();
+      render(new Sort(),this.#boardContainer);
+      render(this.#eventListComponent, this.#boardContainer);
+      render(new CreatTrip(this.#tripPoints[0]), this.#eventListComponent.element);
+      for(let i = 1; i < this.#tripPoints.length - 1; i++){
+        this.#renderTripPoint(this.#tripPoints[i]);
+      }}
+
   }
 
   #renderTripPoint(tripPoint) {
